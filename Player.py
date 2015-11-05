@@ -25,6 +25,6 @@ class Player:
         self.hand.append(card)
 
     def act(self, state, dealer_state, shoe_state):
-        return self.actions[state][dealer_state]
+        return self.actions[state][dealer_state][shoe_state]
 
 

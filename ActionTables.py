@@ -20,43 +20,79 @@ def basic_strategy():
     table = dict()
     # hard
     for ps in ['17', '18', '19', '20']:
-        table[ps] = {ds: 's' for ds in dealer_states}
+        table[ps] = dict()
+        for ds in dealer_states:
+            table[ps][ds] = {c: 's' for c in deck_count}
     for ps in ['13', '14', '15', '16']:
-        table[ps] = {ds: 's' for ds in ['2', '3', '4', '5', '6']}
-        table[ps].update({ds: 'h' for ds in ['7', '8', '9', '10', '11']})
+        table[ps] = dict()
+        for ds in ['2', '3', '4', '5', '6']:
+            table[ps][ds] = {c: 's' for c in deck_count}
+        for ds in ['7', '8', '9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['12']:
-        table[ps] = {ds: 'h' for ds in ['2', '3', '7', '8', '9', '10', '11']}
-        table[ps].update({ds: 's' for ds in ['4', '5', '6']})
+        table[ps] = dict()
+        for ds in ['2', '3', '7', '8', '9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
+        for ds in ['4', '5', '6']:
+            table[ps][ds] = {c: 's' for c in deck_count}
     for ps in ['11']:
-        table[ps] = {ds: 'd' for ds in ['2', '3', '4', '5', '6', '7', '8', '9', '10']}
-        table[ps].update({ds: 'h' for ds in ['11']})
+        table[ps] = dict()
+        for ds in ['2', '3', '4', '5', '6', '7', '8', '9', '10']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['10']:
-        table[ps] = {ds: 'd' for ds in ['2', '3', '4', '5', '6', '7', '8', '9']}
-        table[ps].update({ds: 'h' for ds in ['10', '11']})
+        table[ps] = dict()
+        for ds in ['2', '3', '4', '5', '6', '7', '8', '9']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['9']:
-        table[ps] = {ds: 'd' for ds in ['3', '4', '5', '6']}
-        table[ps].update({ds: 'h' for ds in ['2', '7', '8', '9', '10', '11']})
+        table[ps] = dict()
+        for ds in ['3', '4', '5', '6']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['2', '7', '8', '9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['4', '5', '6', '7', '8']:
-        table[ps] = {ds: 'h' for ds in dealer_states}
+        table[ps] = dict()
+        for ds in dealer_states:
+            table[ps][ds] = {c: 'h' for c in deck_count}
 
     # soft
     for ps in ['8a', '9a']:
-        table[ps] = {ds: 's' for ds in dealer_states}
+        table[ps] = dict()
+        for ds in dealer_states:
+            table[ps][ds] = {c: 's' for c in deck_count}
     for ps in ['7a']:
-        table[ps] = {ds: 's' for ds in ['2', '7', '8']}
-        table[ps].update({ds: 'd' for ds in ['3', '4', '5', '6']})
-        table[ps].update({ds: 'h' for ds in ['9', '10', '11']})
+        table[ps] = dict()
+        for ds in ['2', '7', '8']:
+            table[ps][ds] = {c: 's' for c in deck_count}
+        for ds in ['3', '4', '5', '6']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['6a']:
-        table[ps] = {ds: 'd' for ds in ['3', '4', '5', '6']}
-        table[ps].update({ds: 'h' for ds in ['2', '7', '8', '9', '10', '11']})
+        table[ps] = dict()
+        for ds in ['3', '4', '5', '6']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['2', '7', '8', '9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['4a', '5a']:
-        table[ps] = {ds: 'd' for ds in ['4', '5', '6']}
-        table[ps].update({ds: 'h' for ds in ['2', '3', '7', '8', '9', '10', '11']})
+        table[ps] = dict()
+        for ds in ['4', '5', '6']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['2', '3', '7', '8', '9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['2a', '3a']:
-        table[ps] = {ds: 'd' for ds in ['5', '6']}
-        table[ps].update({ds: 'h' for ds in ['2', '3', '4', '7', '8', '9', '10', '11']})
+        table[ps] = dict()
+        for ds in ['5', '6']:
+            table[ps][ds] = {c: 'd' for c in deck_count}
+        for ds in ['2', '3', '4', '7', '8', '9', '10', '11']:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     for ps in ['1a']:
-        table[ps] = {ds: 'h' for ds in dealer_states}
+        table[ps] = dict()
+        for ds in dealer_states:
+            table[ps][ds] = {c: 'h' for c in deck_count}
     return table
 
 def random_strategy():
