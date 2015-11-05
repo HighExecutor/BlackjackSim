@@ -4,6 +4,7 @@ from game.Deck import Shoe
 from game.ActionTables import *
 from game.Player import Player
 from game.Hand import Hand
+import numpy
 
 class Game:
     def __init__(self, action_table, players, decks, init_bank, max_shuffles, max_win, min_bet):
@@ -39,7 +40,6 @@ class Game:
         self.player.hit(self.shoe.deal())
         self.dealer_hand.append(self.shoe.deal())
         self.player.hit(self.shoe.deal())
-        print('deck size = ' + str(self.shoe.size()))
         print("Player's hand:")
         self.player.hand.print()
         print("Dealer's hand:")
@@ -89,6 +89,7 @@ class Game:
     def stand(self):
         self.dealer_play()
         if self.dealer_hand.score() > 21:
+            print('Dealer over')
             return self.bet * 2
         return self.compare_hand()
 
@@ -137,7 +138,14 @@ class Game:
 
 if __name__ == '__main__':
     #action_table, players, decks, init_bank, max_shuffles, max_win, min_bet
-    # action_table = random_strategy()
+    # action_table = random_counted_strategy()
     action_table = basic_strategy()
-    game = Game(action_table, 7, 2, 100, 10, 1.5, 10)
-    print("result = " + str(game()))
+    results = []
+    for _ in range(100):
+        game = Game(action_table, 7, 2, 100, 5, 2, 10)
+        results.append(game())
+    print("-------")
+    loses = len([res for res in results if res <= 0])
+    print('loses = ' + str(loses))
+    print("result mean = " + str(numpy.mean(results)))
+    print("result std = " + str(numpy.std(results)))

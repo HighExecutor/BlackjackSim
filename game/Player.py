@@ -14,8 +14,8 @@ class Player:
         aces_number = self.hand.aces_number()
         if not ace:
             return str(score)
-        if aces_number == 2:
-            return '1a'
+        if aces_number == len(self.hand):
+            return str(aces_number - 1) + 'a'
         if ace and score < 10:
             return str(score) + 'a'
         return str(score + 1)

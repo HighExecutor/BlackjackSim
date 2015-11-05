@@ -38,4 +38,3 @@ class Hand(list):
         for card in self:
             res += card.sign + ' '
         print(res)
-
