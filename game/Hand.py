@@ -22,7 +22,7 @@ class Hand(list):
                 sc += 1
             if sc <= 10:
                 sc += 11
-            if sc > 10:
+            else:
                 sc += 1
         return sc
 

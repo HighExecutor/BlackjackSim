@@ -1,7 +1,9 @@
 __author__ = 'Mishanya'
 
-from Card import Card, signs, values, suits
 import random as rnd
+
+from game.Card import Card, signs, suits
+
 
 class Deck:
     def __init__(self):

@@ -1,9 +1,9 @@
 __author__ = 'Mishanya'
 
-from Deck import Deck, Shoe
-from ActionTables import *
-from Player import Player
-from Hand import Hand
+from game.Deck import Shoe
+from game.ActionTables import *
+from game.Player import Player
+from game.Hand import Hand
 
 class Game:
     def __init__(self, action_table, players, decks, init_bank, max_shuffles, max_win, min_bet):
@@ -32,7 +32,8 @@ class Game:
     def shuffle(self):
         self.shoe = Shoe(self.decks)
         self.shoe.shuffle()
-        self.bet = self.make_bet(self.min_bet)
+        self.bet = 0
+        self.make_bet(self.min_bet)
         self.dealer_hand = Hand()
         self.player.hand = Hand()
         self.player.hit(self.shoe.deal())
@@ -56,7 +57,7 @@ class Game:
 
     def make_bet(self, bet):
         self.player.bank -= bet
-        return bet
+        self.bet += bet
 
     def action(self, dealer_state, shoe_state, canDoubled):
         player_state = self.player.state()

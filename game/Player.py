@@ -1,6 +1,6 @@
 __author__ = 'Mishanya'
 
-from Hand import Hand
+from game.Hand import Hand
 
 class Player:
     def __init__(self, action_table, start_bank):
