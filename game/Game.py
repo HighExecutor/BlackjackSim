@@ -5,6 +5,8 @@ from game.ActionTables import *
 from game.Player import Player
 from game.Hand import Hand
 import numpy
+import time
+import multiprocessing as mp
 
 class Game:
     def __init__(self, action_table, players, decks, init_bank, max_shuffles, max_win, min_bet):
@@ -19,15 +21,17 @@ class Game:
         self.dealer_hand = Hand()
 
     def __call__(self, *args, **kwargs):
+
         shuffles = 0
         while shuffles < self.max_shuffles and 0 < self.player.bank < self.init_bank * self.max_win:
-            print('---new shuffle---')
-            print('bank: ' + str(self.player.bank))
+            # print('---new shuffle---')
+            # print('bank: ' + str(self.player.bank))
             win = self.shuffle()
-            print('win: ' + str(win))
+            # print('win: ' + str(win))
             if win > 0:
                 self.player.bank += win
             shuffles += 1
+
         return self.player.bank
 
     def shuffle(self):
@@ -40,19 +44,19 @@ class Game:
         self.player.hit(self.shoe.deal())
         self.dealer_hand.append(self.shoe.deal())
         self.player.hit(self.shoe.deal())
-        print("Player's hand:")
-        self.player.hand.print()
-        print("Dealer's hand:")
-        self.dealer_hand.print()
+        # print("Player's hand:")
+        # self.player.hand.print()
+        # print("Dealer's hand:")
+        # self.dealer_hand.print()
         if self.player.hand.score() == 21:
-            print("Blackjack")
+            # print("Blackjack")
             return self.blackjack()
         for _ in range(self.players - 1):
             self.shoe.deal()
             self.shoe.deal()
         dealer_state = self.dealer_state()
         shoe_state = self.shoe_state()
-        print("Shoe count: " + str(self.shoe.count))
+        # print("Shoe count: " + str(self.shoe.count))
         return self.action(dealer_state, shoe_state, True)
 
     def make_bet(self, bet):
@@ -63,13 +67,13 @@ class Game:
         player_state = self.player.state()
         act = self.player.act(player_state, dealer_state, shoe_state)
         if act == 's':
-            print('stand')
+            # print('stand')
             return self.stand()
         elif act == 'd' and canDoubled:
-            print('double')
+            # print('double')
             return self.double()
         else:
-            print('hit')
+            # print('hit')
             return self.hit()
 
     def dealer_state(self):
@@ -89,14 +93,14 @@ class Game:
     def stand(self):
         self.dealer_play()
         if self.dealer_hand.score() > 21:
-            print('Dealer over')
+            # print('Dealer over')
             return self.bet * 2
         return self.compare_hand()
 
     def hit(self):
         self.player.hit(self.shoe.deal())
-        print("Player's hand")
-        self.player.hand.print()
+        # print("Player's hand")
+        # self.player.hand.print()
         cur_score = self.player.hand.score()
         if cur_score > 21:
             return self.over()
@@ -110,7 +114,7 @@ class Game:
 
 
     def over(self):
-        print('player over')
+        # print('player over')
         return 0
 
     def blackjack(self):
@@ -128,23 +132,41 @@ class Game:
     def compare_hand(self):
         dealer_score = self.dealer_hand.score()
         player_score = self.player.hand.score()
-        print("dealer : " + str(dealer_score))
-        print("player : " + str(player_score))
+        # print("dealer : " + str(dealer_score))
+        # print("player : " + str(player_score))
         if player_score > dealer_score:
             return self.bet * 2
         if player_score == dealer_score:
             return self.bet
         return 0
 
+action_table = basic_strategy()
+# action_table = random_counted_strategy()
+def pl_game(c):
+    game = Game(action_table, 7, 2, 100, 20, 2, 10)
+    return game()
+
 if __name__ == '__main__':
     #action_table, players, decks, init_bank, max_shuffles, max_win, min_bet
     # action_table = random_counted_strategy()
-    action_table = basic_strategy()
+    t1 = time.clock()
+    # action_table = basic_strategy()
     results = []
-    for _ in range(100):
-        game = Game(action_table, 7, 2, 100, 5, 2, 10)
-        results.append(game())
+
+    repeates = 10000
+    nodes = 7
+
+    p = mp.Pool(nodes)
+    results = p.map(pl_game, [0 for _ in range(repeates)])
+
+    # for _ in range(repeates):
+    #     game = Game(action_table, 7, 2, 100, 5, 2, 10)
+    #     results.append(game())
+
+    t2 = time.clock()
     print("-------")
+    print(results[0:10])
+    print("game time = " + str(t2 - t1))
     loses = len([res for res in results if res <= 0])
     print('loses = ' + str(loses))
     print("result mean = " + str(numpy.mean(results)))
